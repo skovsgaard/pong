@@ -8,6 +8,7 @@ ball = {
   x = (love.graphics.getWidth() / 2) - 10,
   y = (love.graphics.getHeight() / 2) - 10,
   speed = 10,
+  direction = {x=1,y=1}, -- Positive 1 is down or right. Opposite for negative.
   img = nil
 }
 
@@ -25,6 +26,14 @@ ai = {
   img = nil
 }
 
+function moveball(ball)
+  if ball.direction.y > 0 then
+    ball.y = ball.y + ball.speed
+  else
+    ball.y = ball.y - ball.speed
+  end
+end
+
 function love.load()
   -- Before you do anything, allow hold-to-move
   love.keyboard.setKeyRepeat(true)
@@ -35,6 +44,7 @@ function love.load()
 end
 
 function love.update(dt)
+  moveball(ball)
 end
 
 function love.draw(dt)
