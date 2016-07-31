@@ -37,6 +37,11 @@ function ycollide(entity)
 end
 
 function entitycollide(entity, foreignentity)
+  if entity.x < foreignentity.x or
+     entity.x > foreignentity.x + foreignentity.img:getWidth() then
+    return false
+  end
+
   return entity.y + entity.img:getHeight() == foreignentity.y or
 	 entity.y == foreignentity.y + foreignentity.img:getHeight()
 end
