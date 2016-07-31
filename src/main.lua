@@ -26,12 +26,41 @@ ai = {
   img = nil
 }
 
+function xcollide(entity)
+  return entity.x <= 0 or
+	 entity.x >= love.graphics.getWidth() - entity.img:getWidth()
+end
+
+function ycollide(entity)
+  return entity.y <= 0 or
+	 entity.y >= love.graphics.getHeight() - entity.img:getHeight()
+end
+
+function entitycollide(entity, foreignentity)
+  return entity.y + entity.img:getHeight() == foreignentity.y or
+	 entity.y == foreignentity.y + foreignentity.img:getHeight()
+end
+
 function moveball(ball)
-  if ball.direction.y > 0 then
-    ball.y = ball.y + ball.speed
-  else
-    ball.y = ball.y - ball.speed
+  function domoveball()
+    if ball.direction.y > 0 then
+      ball.y = ball.y + ball.speed
+    else
+      ball.y = ball.y - ball.speed
+    end
   end
+
+  if xcollide(ball) then
+    ball.direction.x = ball.direction.x * -1
+    return domoveball()
+  end
+
+  if ycollide(ball) or entitycollide(ball, player) or entitycollide(ball, ai) then
+    ball.direction.y = ball.direction.y * -1
+    return domoveball()
+  end
+
+  domoveball()
 end
 
 function love.load()
