@@ -20,7 +20,7 @@ local keymap = {
 -- Check the mapping and fire
 
 function dispatch(key)
-  keymap[key]()
+  if keymap[key] then keymap[key]() end
 end
 
 return dispatch
