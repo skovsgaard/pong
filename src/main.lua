@@ -7,21 +7,21 @@ basepaddlecenter = (love.graphics.getWidth() / 2) - 50
 ball = {
   x = (love.graphics.getWidth() / 2) - 10,
   y = (love.graphics.getHeight() / 2) - 10,
-  speed = 10,
+  speed = 5,
   direction = {x=1,y=1}, -- Positive 1 is down or right. Opposite for negative.
   img = nil
 }
 
 player = {
   x = basepaddlecenter,
-  y = love.graphics.getHeight() - 40,
+  y = love.graphics.getHeight() - 25,
   speed = 20,
   img = nil
 }
 
 ai = {
   x = basepaddlecenter,
-  y = 20,
+  y = 5,
   speed = 20,
   img = nil
 }
@@ -37,13 +37,25 @@ function ycollide(ball)
 end
 
 function collide(ball, paddle)
+  local paddlecenter = paddle.x + (paddle.img:getWidth() / 2)
+  local ballcenter = ball.x + (ball.img:getWidth() / 2)
+
   if ball.x < paddle.x or
      ball.x > paddle.x + paddle.img:getWidth() then
     return false
   end
 
-  return ball.y + ball.img:getHeight() == paddle.y or
-	 ball.y == paddle.y + paddle.img:getHeight()
+  if ball.y + ball.img:getHeight() == paddle.y or
+     ball.y == paddle.y + paddle.img:getHeight() then
+    if ballcenter < paddlecenter then
+      ball.direction.x = -1
+    else
+      ball.direction.x = 1
+    end
+    return true
+  end
+
+  return false
 end
 
 function moveball(ball)
@@ -52,6 +64,12 @@ function moveball(ball)
       ball.y = ball.y + ball.speed
     else
       ball.y = ball.y - ball.speed
+    end
+
+    if ball.direction.x > 0 then
+      ball.x = ball.x + ball.speed
+    else
+      ball.x = ball.x - ball.speed
     end
   end
 
