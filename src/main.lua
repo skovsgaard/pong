@@ -16,14 +16,16 @@ player = {
   x = basepaddlecenter,
   y = love.graphics.getHeight() - 25,
   speed = 20,
-  img = nil
+  img = nil,
+  score = 0
 }
 
 ai = {
   x = basepaddlecenter,
   y = 5,
   speed = 20,
-  img = nil
+  img = nil,
+  score = 0
 }
 
 function xcollide(ball)
@@ -78,9 +80,19 @@ function moveball(ball)
     return domoveball()
   end
 
-  if ycollide(ball) or collide(ball, player) or collide(ball, ai) then
+  if collide(ball, player) or collide(ball, ai) then
     ball.direction.y = ball.direction.y * -1
     return domoveball()
+  end
+
+  if ycollide(ball) then
+    if ball.y + ball.img:getHeight() == love.graphics.getHeight() then
+      ai.score = ai.score + 1
+      ball.direction.y = ball.direction.y * -1
+    elseif ball.y == 0 then
+      player.score = player.score + 1
+      ball.direction.y = ball.direction.y * -1
+    end
   end
 
   domoveball()
@@ -100,6 +112,11 @@ function love.update(dt)
 end
 
 function love.draw(dt)
+  love.graphics.print(
+    player.score .. " - " .. ai.score,
+    (love.graphics.getWidth() / 2) - 30,
+    (love.graphics.getHeight() / 2) - 5
+  )
   love.graphics.draw(player.img, player.x, player.y)
   love.graphics.draw(ai.img, ai.x, ai.y)
   love.graphics.draw(ball.img, ball.x, ball.y)
