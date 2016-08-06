@@ -8,7 +8,12 @@ ball = {
   x = (love.graphics.getWidth() / 2) - 10,
   y = (love.graphics.getHeight() / 2) - 10,
   speed = 5,
-  direction = {x=1,y=1}, -- Positive 1 is down or right. Opposite for negative.
+  direction = {
+    x=1,
+    y=1,
+    flipx=function(self) self.x = self.x * -1 end,
+    flipy=function(self) self.y = self.y * -1 end
+  }, -- Positive 1 is down or right. Opposite for negative.
   img = nil
 }
 
@@ -76,22 +81,22 @@ function moveball(ball)
   end
 
   if xcollide(ball) then
-    ball.direction.x = ball.direction.x * -1
+    ball.direction.flipx(ball.direction)
     return domoveball()
   end
 
   if collide(ball, player) or collide(ball, ai) then
-    ball.direction.y = ball.direction.y * -1
+    ball.direction.flipy(ball.direction)
     return domoveball()
   end
 
   if ycollide(ball) then
     if ball.y + ball.img:getHeight() == love.graphics.getHeight() then
       ai.score = ai.score + 1
-      ball.direction.y = ball.direction.y * -1
+      ball.direction.flipy(ball.direction)
     elseif ball.y == 0 then
       player.score = player.score + 1
-      ball.direction.y = ball.direction.y * -1
+      ball.direction.flipy(ball.direction)
     end
   end
 
