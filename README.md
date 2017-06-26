@@ -14,7 +14,7 @@ As the best case for running this right now is to test changes, simply run the f
 
     love src
 
-Another way to run the game, which isn't really necessary yet is to build a `.love` file using the `build-dist.sh` script. You will need to run the resulting file using `love` (or "Open with"), but yeah, not really relevant right now.
+Another way to run the game, which isn't really necessary yet is to build a `.love` file by running `make`. You will need to run the resulting file using `love` (or "Open with"), but yeah, not really relevant right now.
 
 
 ## Contributing
